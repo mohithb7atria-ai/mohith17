@@ -6,18 +6,25 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
-import { GraduationCap, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { GraduationCap, Mail, Lock, User, ArrowRight, Calendar, BookOpen } from 'lucide-react';
 import { z } from 'zod';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { supabase } from '@/integrations/supabase/client';
 
 const emailSchema = z.string().email('Please enter a valid email address');
 const passwordSchema = z.string().min(6, 'Password must be at least 6 characters');
-const nameSchema = z.string().min(2, 'Name must be at least 2 characters').optional();
+const nameSchema = z.string().min(2, 'Name must be at least 2 characters');
+
+const currentYear = new Date().getFullYear();
+const targetYears = [currentYear, currentYear + 1, currentYear + 2, currentYear + 3];
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [examType, setExamType] = useState<string>('');
+  const [targetYear, setTargetYear] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   
@@ -43,7 +50,7 @@ export default function Auth() {
       newErrors.password = passwordResult.error.errors[0].message;
     }
     
-    if (!isLogin && fullName) {
+    if (!isLogin) {
       const nameResult = nameSchema.safeParse(fullName);
       if (!nameResult.success) {
         newErrors.name = nameResult.error.errors[0].message;
@@ -75,7 +82,7 @@ export default function Auth() {
           navigate('/');
         }
       } else {
-        const { error } = await signUp(email, password, fullName);
+        const { error, userId } = await signUp(email, password, fullName);
         if (error) {
           if (error.message.includes('already registered')) {
             toast.error('This email is already registered. Try logging in instead.');
@@ -83,6 +90,19 @@ export default function Auth() {
             toast.error(error.message);
           }
         } else {
+          // Update profile with exam preferences
+          if (userId && (examType || targetYear)) {
+            const updates: { exam_type?: string; target_year?: number; full_name?: string } = {};
+            if (examType) updates.exam_type = examType;
+            if (targetYear) updates.target_year = parseInt(targetYear);
+            if (fullName) updates.full_name = fullName;
+            
+            await supabase
+              .from('profiles')
+              .update(updates)
+              .eq('user_id', userId);
+          }
+          
           toast.success('Account created successfully! You can now start learning.');
           navigate('/');
         }
@@ -125,23 +145,60 @@ export default function Auth() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      className="pl-10"
-                    />
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        id="name"
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        className="pl-10"
+                        required
+                      />
+                    </div>
+                    {errors.name && (
+                      <p className="text-sm text-destructive">{errors.name}</p>
+                    )}
                   </div>
-                  {errors.name && (
-                    <p className="text-sm text-destructive">{errors.name}</p>
-                  )}
-                </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-2">
+                      <Label>Exam Type</Label>
+                      <Select value={examType} onValueChange={setExamType}>
+                        <SelectTrigger className="w-full">
+                          <BookOpen className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <SelectValue placeholder="Select exam" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="JEE">JEE (Engineering)</SelectItem>
+                          <SelectItem value="NEET">NEET (Medical)</SelectItem>
+                          <SelectItem value="BOTH">Both JEE & NEET</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label>Target Year</Label>
+                      <Select value={targetYear} onValueChange={setTargetYear}>
+                        <SelectTrigger className="w-full">
+                          <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                          <SelectValue placeholder="Year" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {targetYears.map((year) => (
+                            <SelectItem key={year} value={year.toString()}>
+                              {year}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </>
               )}
               
               <div className="space-y-2">
