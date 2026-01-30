@@ -13,6 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const difficultyLevels = [
   { id: "easy", name: "Easy", color: "bg-success", count: 850 },
@@ -66,6 +67,15 @@ const recentTopics = [
 
 export default function Practice() {
   const [selectedDifficulty, setSelectedDifficulty] = useState("medium");
+  const navigate = useNavigate();
+
+  const handleStartPractice = (category?: string) => {
+    const params = new URLSearchParams();
+    params.set("difficulty", selectedDifficulty);
+    if (category) params.set("category", category);
+    params.set("count", "10");
+    navigate(`/practice/session?${params.toString()}`);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -160,7 +170,12 @@ export default function Practice() {
                     <span className="text-xs text-muted-foreground">
                       {category.questions.toLocaleString()}+ questions
                     </span>
-                    <Button variant="ghost" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="group-hover:bg-primary group-hover:text-primary-foreground"
+                      onClick={() => handleStartPractice(category.id)}
+                    >
                       Start <ChevronRight className="h-4 w-4 ml-1" />
                     </Button>
                   </div>
@@ -204,7 +219,7 @@ export default function Practice() {
                 </button>
               ))}
 
-              <Button variant="hero" className="w-full mt-4">
+              <Button variant="hero" className="w-full mt-4" onClick={() => handleStartPractice()}>
                 Start Practice
               </Button>
             </CardContent>

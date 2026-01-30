@@ -8,6 +8,7 @@ import { Layout } from "@/components/layout/Layout";
 import Index from "./pages/Index";
 import Learn from "./pages/Learn";
 import Practice from "./pages/Practice";
+import PracticeSession from "./pages/PracticeSession";
 import Tests from "./pages/Tests";
 import Revision from "./pages/Revision";
 import Analysis from "./pages/Analysis";
@@ -31,6 +32,7 @@ const App = () => (
               <Route path="/learn" element={<Learn />} />
               <Route path="/learn/:subject" element={<Learn />} />
               <Route path="/practice" element={<Practice />} />
+              <Route path="/practice/session" element={<PracticeSession />} />
               <Route path="/tests" element={<Tests />} />
               <Route path="/revision" element={<Revision />} />
               <Route path="/analysis" element={<Analysis />} />
