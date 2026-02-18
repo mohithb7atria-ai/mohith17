@@ -9,11 +9,13 @@ import {
   Play,
   Calendar,
   Lock,
-  Star
+  Star,
+  Sparkles
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Link } from "react-router-dom";
 
 const testCategories = [
   { id: "sectional", name: "Sectional Tests", count: 120, icon: FileText },
@@ -95,10 +97,19 @@ export default function Tests() {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="font-display text-3xl font-bold mb-2">Test Series</h1>
-          <p className="text-muted-foreground">
-            Practice with exam-simulated mock tests and track your performance
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="font-display text-3xl font-bold mb-2">Test Series</h1>
+              <p className="text-muted-foreground">
+                Practice with exam-simulated mock tests and track your performance
+              </p>
+            </div>
+            <Link to="/tests/generate">
+              <Button className="gap-2" variant="default">
+                <Sparkles className="h-4 w-4" /> Generate AI Test
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Test Category Pills */}
