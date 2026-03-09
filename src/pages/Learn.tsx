@@ -8,10 +8,9 @@ import {
   ChevronRight, 
   BookOpen, 
   Clock,
-  Target,
-  TrendingUp
+  FileText
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Progress } from "@/components/ui/progress";
@@ -89,6 +88,7 @@ const subjects = [
 
 export default function Learn() {
   const { subject: subjectParam } = useParams();
+  const navigate = useNavigate();
   const [selectedSubject, setSelectedSubject] = useState(
     subjectParam || "physics"
   );
@@ -205,6 +205,17 @@ export default function Learn() {
                           </div>
                           <Progress value={chapter.progress} className="h-2" />
                         </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-1.5 text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/learn/notes?subject=${encodeURIComponent(currentSubject.name)}&chapter=${encodeURIComponent(chapter.name)}`);
+                          }}
+                        >
+                          <FileText className="h-3.5 w-3.5" /> Notes
+                        </Button>
                         <Button variant="ghost" size="icon" className="group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                           <ChevronRight className="h-5 w-5" />
                         </Button>
