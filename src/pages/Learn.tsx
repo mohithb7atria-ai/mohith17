@@ -88,6 +88,7 @@ const subjects = [
 
 export default function Learn() {
   const { subject: subjectParam } = useParams();
+  const navigate = useNavigate();
   const [selectedSubject, setSelectedSubject] = useState(
     subjectParam || "physics"
   );
