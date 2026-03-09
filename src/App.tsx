@@ -15,6 +15,7 @@ import Analysis from "./pages/Analysis";
 import DoubtSolver from "./pages/DoubtSolver";
 import Auth from "./pages/Auth";
 import GenerateMockTest from "./pages/GenerateMockTest";
+import ChapterNotes from "./pages/ChapterNotes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
