@@ -77,6 +77,13 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
   if (submitted && stats) {
     return (
       <div className="space-y-6 animate-fade-in">
+        {/* Auto-submit banner */}
+        {autoSubmitted && (
+          <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">
+            <AlertTriangle className="h-4 w-4 shrink-0" />
+            <span>Time's up! Your test was auto-submitted.</span>
+          </div>
+        )}
         {/* Results Summary */}
         <Card className="border-0 shadow-lg">
           <CardHeader className="text-center pb-2">
