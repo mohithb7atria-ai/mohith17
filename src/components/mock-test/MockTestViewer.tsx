@@ -1,13 +1,14 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, ChevronLeft, ChevronRight, Eye, EyeOff,
-  Clock, BarChart3, RotateCcw, Trophy
+  Clock, BarChart3, RotateCcw, Trophy, AlertTriangle
 } from "lucide-react";
 import type { MockTestData, MockTestQuestion } from "@/hooks/useMockTestGenerator";
+import { usePracticeTimer } from "@/hooks/usePracticeTimer";
 
 interface MockTestViewerProps {
   testData: MockTestData;
@@ -21,6 +22,18 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showSolution, setShowSolution] = useState<Record<number, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [autoSubmitted, setAutoSubmitted] = useState(false);
+
+  const handleAutoSubmit = useCallback(() => {
+    setSubmitted(true);
+    setAutoSubmitted(true);
+  }, []);
+
+  const { seconds, isRunning, formattedTime, pause } = usePracticeTimer({
+    initialSeconds: (testData.meta.estimated_time_minutes || 30) * 60,
+    onTimeUp: handleAutoSubmit,
+    autoStart: true,
+  });
 
   const q = testData.questions[currentIndex];
   const total = testData.questions.length;
@@ -64,6 +77,13 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
   if (submitted && stats) {
     return (
       <div className="space-y-6 animate-fade-in">
+        {/* Auto-submit banner */}
+        {autoSubmitted && (
+          <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-lg text-sm text-destructive">
+            <AlertTriangle className="h-4 w-4 shrink-0" />
+            <span>Time's up! Your test was auto-submitted.</span>
+          </div>
+        )}
         {/* Results Summary */}
         <Card className="border-0 shadow-lg">
           <CardHeader className="text-center pb-2">
@@ -167,10 +187,10 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
   return (
     <div className="space-y-4 animate-fade-in">
       {/* Progress */}
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Question {currentIndex + 1} of {total}</span>
-        <span className="flex items-center gap-1">
-          <Clock className="h-4 w-4" /> ~{testData.meta.estimated_time_minutes} min
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-muted-foreground">Question {currentIndex + 1} of {total}</span>
+        <span className={`flex items-center gap-1.5 font-mono font-semibold ${seconds <= 60 ? "text-destructive animate-pulse" : seconds <= 300 ? "text-amber-500" : "text-muted-foreground"}`}>
+          <Clock className="h-4 w-4" /> {formattedTime}
         </span>
       </div>
       <Progress value={progress} className="h-2" />
@@ -260,7 +280,7 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
           </Button>
         ) : (
           <Button
-            onClick={() => setSubmitted(true)}
+            onClick={() => { pause(); setSubmitted(true); }}
             variant="default"
             className="gap-2 bg-accent hover:bg-accent/90"
             disabled={submitted}
