@@ -22,6 +22,18 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showSolution, setShowSolution] = useState<Record<number, boolean>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [autoSubmitted, setAutoSubmitted] = useState(false);
+
+  const handleAutoSubmit = useCallback(() => {
+    setSubmitted(true);
+    setAutoSubmitted(true);
+  }, []);
+
+  const { seconds, isRunning, formattedTime, pause } = usePracticeTimer({
+    initialSeconds: (testData.meta.estimated_time_minutes || 30) * 60,
+    onTimeUp: handleAutoSubmit,
+    autoStart: true,
+  });
 
   const q = testData.questions[currentIndex];
   const total = testData.questions.length;
