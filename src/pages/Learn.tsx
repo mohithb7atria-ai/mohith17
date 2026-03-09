@@ -205,6 +205,17 @@ export default function Learn() {
                           </div>
                           <Progress value={chapter.progress} className="h-2" />
                         </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-1.5 text-xs"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/learn/notes?subject=${encodeURIComponent(currentSubject.name)}&chapter=${encodeURIComponent(chapter.name)}`);
+                          }}
+                        >
+                          <FileText className="h-3.5 w-3.5" /> Notes
+                        </Button>
                         <Button variant="ghost" size="icon" className="group-hover:bg-primary group-hover:text-primary-foreground transition-all">
                           <ChevronRight className="h-5 w-5" />
                         </Button>

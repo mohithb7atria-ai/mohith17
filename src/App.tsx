@@ -37,6 +37,7 @@ const App = () => (
               <Route path="/practice/session" element={<PracticeSession />} />
               <Route path="/tests" element={<Tests />} />
               <Route path="/tests/generate" element={<GenerateMockTest />} />
+              <Route path="/learn/notes" element={<ChapterNotes />} />
               <Route path="/revision" element={<Revision />} />
               <Route path="/analysis" element={<Analysis />} />
               <Route path="/doubt-solver" element={<DoubtSolver />} />
