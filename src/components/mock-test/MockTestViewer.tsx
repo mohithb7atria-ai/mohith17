@@ -1,13 +1,14 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
   CheckCircle2, XCircle, ChevronLeft, ChevronRight, Eye, EyeOff,
-  Clock, BarChart3, RotateCcw, Trophy
+  Clock, BarChart3, RotateCcw, Trophy, AlertTriangle
 } from "lucide-react";
 import type { MockTestData, MockTestQuestion } from "@/hooks/useMockTestGenerator";
+import { usePracticeTimer } from "@/hooks/usePracticeTimer";
 
 interface MockTestViewerProps {
   testData: MockTestData;
