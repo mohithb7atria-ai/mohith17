@@ -8,10 +8,9 @@ import {
   ChevronRight, 
   BookOpen, 
   Clock,
-  Target,
-  TrendingUp
+  FileText
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Progress } from "@/components/ui/progress";
