@@ -280,7 +280,7 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
           </Button>
         ) : (
           <Button
-            onClick={() => setSubmitted(true)}
+            onClick={() => { pause(); setSubmitted(true); }}
             variant="default"
             className="gap-2 bg-accent hover:bg-accent/90"
             disabled={submitted}
