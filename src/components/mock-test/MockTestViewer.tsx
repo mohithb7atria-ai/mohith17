@@ -187,10 +187,10 @@ export function MockTestViewer({ testData, onReset }: MockTestViewerProps) {
   return (
     <div className="space-y-4 animate-fade-in">
       {/* Progress */}
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
-        <span>Question {currentIndex + 1} of {total}</span>
-        <span className="flex items-center gap-1">
-          <Clock className="h-4 w-4" /> ~{testData.meta.estimated_time_minutes} min
+      <div className="flex items-center justify-between text-sm">
+        <span className="text-muted-foreground">Question {currentIndex + 1} of {total}</span>
+        <span className={`flex items-center gap-1.5 font-mono font-semibold ${seconds <= 60 ? "text-destructive animate-pulse" : seconds <= 300 ? "text-amber-500" : "text-muted-foreground"}`}>
+          <Clock className="h-4 w-4" /> {formattedTime}
         </span>
       </div>
       <Progress value={progress} className="h-2" />
