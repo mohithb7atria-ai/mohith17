@@ -1,0 +1,2 @@
+CREATE POLICY "temp_anon_insert_chapter_notes" ON storage.objects FOR INSERT TO anon WITH CHECK (bucket_id='chapter-notes');
+CREATE POLICY "temp_anon_read_chapter_notes" ON storage.objects FOR SELECT TO anon USING (bucket_id='chapter-notes');

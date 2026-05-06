@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Public read chapter-notes" ON storage.objects;

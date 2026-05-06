@@ -1,15 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Target, Trophy, Brain } from "lucide-react";
+import { ArrowRight, Sparkles, Target, Trophy, Brain, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import heroImg from "@/assets/hero-marvel.jpg";
 
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden py-20 lg:py-32">
-      {/* Background Elements */}
+      {/* Background hero art */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-        <div className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-mathematics/5 blur-3xl" />
+        <img src={heroImg} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/85 to-background" />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 6, repeat: Infinity }}
+          className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/30 blur-3xl"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.3, 1], opacity: [0.25, 0.5, 0.25] }}
+          transition={{ duration: 8, repeat: Infinity, delay: 1 }}
+          className="absolute bottom-20 right-10 h-72 w-72 rounded-full bg-accent/30 blur-3xl"
+        />
       </div>
 
       <div className="container mx-auto px-4">
@@ -41,10 +52,10 @@ export function HeroSection() {
                 <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
-            <Link to="/doubt-solver">
+            <Link to="/notes">
               <Button variant="hero-outline" size="xl" className="gap-2">
-                <Brain className="h-5 w-5" />
-                Try AI Doubt Solver
+                <FileText className="h-5 w-5" />
+                Download Notes
               </Button>
             </Link>
           </div>

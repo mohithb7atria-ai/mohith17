@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      chapter_notes: {
+        Row: {
+          chapter: string
+          created_at: string
+          display_order: number | null
+          exam_type: string
+          file_path: string
+          file_size_bytes: number | null
+          file_url: string
+          id: string
+          subject: string
+        }
+        Insert: {
+          chapter: string
+          created_at?: string
+          display_order?: number | null
+          exam_type?: string
+          file_path: string
+          file_size_bytes?: number | null
+          file_url: string
+          id?: string
+          subject: string
+        }
+        Update: {
+          chapter?: string
+          created_at?: string
+          display_order?: number | null
+          exam_type?: string
+          file_path?: string
+          file_size_bytes?: number | null
+          file_url?: string
+          id?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       chapters: {
         Row: {
           chapter_number: number | null
