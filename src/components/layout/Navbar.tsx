@@ -5,14 +5,14 @@ import {
   Brain, 
   ClipboardList, 
   BarChart3, 
-  RefreshCw, 
   Home,
   Menu,
   X,
   User,
   Sparkles,
   LogOut,
-  LogIn
+  LogIn,
+  FileText
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -28,9 +28,9 @@ import {
 const navItems = [
   { path: "/", label: "Home", icon: Home },
   { path: "/learn", label: "Learn", icon: BookOpen },
+  { path: "/notes", label: "Notes", icon: FileText },
   { path: "/practice", label: "Practice", icon: Brain },
   { path: "/tests", label: "Tests", icon: ClipboardList },
-  { path: "/revision", label: "Revision", icon: RefreshCw },
   { path: "/analysis", label: "Analysis", icon: BarChart3 },
 ];
 
