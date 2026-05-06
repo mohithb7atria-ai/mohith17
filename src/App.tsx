@@ -16,6 +16,7 @@ import DoubtSolver from "./pages/DoubtSolver";
 import Auth from "./pages/Auth";
 import GenerateMockTest from "./pages/GenerateMockTest";
 import ChapterNotes from "./pages/ChapterNotes";
+import NotesLibrary from "./pages/NotesLibrary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/tests" element={<Tests />} />
               <Route path="/tests/generate" element={<GenerateMockTest />} />
               <Route path="/learn/notes" element={<ChapterNotes />} />
+              <Route path="/notes" element={<NotesLibrary />} />
               <Route path="/revision" element={<Revision />} />
               <Route path="/analysis" element={<Analysis />} />
               <Route path="/doubt-solver" element={<DoubtSolver />} />
