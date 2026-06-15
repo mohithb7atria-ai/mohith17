@@ -165,65 +165,57 @@ export default function Learn() {
             </div>
 
             <div className="space-y-4">
-              {currentSubject.chapters.map((chapter, index) => (
-                <Card
-                  key={chapter.id}
-                  className="group hover:shadow-lg hover:border-primary/20 transition-all duration-300 cursor-pointer"
-                >
-                  <CardContent className="p-5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4 flex-1">
-                        <div className={cn(
-                          "h-12 w-12 rounded-xl flex items-center justify-center text-white font-bold text-lg",
-                          chapter.progress === 100 ? "bg-success" : 
-                          chapter.progress > 0 ? currentSubject.color : "bg-secondary text-muted-foreground"
-                        )}>
-                          {index + 1}
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
-                            {chapter.name}
-                          </h3>
-                          <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <BookOpen className="h-3 w-3" />
-                              {chapter.questions} Questions
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              ~2 hours
-                            </span>
+              {currentSubject.chapters.map((chapter, index) => {
+                const goToNotes = () =>
+                  navigate(`/learn/notes?subject=${encodeURIComponent(currentSubject.name)}&chapter=${encodeURIComponent(chapter.name)}`);
+                return (
+                  <Card
+                    key={chapter.id}
+                    onClick={goToNotes}
+                    className="group hover:shadow-lg hover:border-primary/20 transition-all duration-300 cursor-pointer"
+                  >
+                    <CardContent className="p-5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className={cn(
+                            "h-12 w-12 rounded-xl flex items-center justify-center text-white font-bold text-lg",
+                            currentSubject.color
+                          )}>
+                            {index + 1}
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
+                              {chapter.name}
+                            </h3>
+                            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <BookOpen className="h-3 w-3" />
+                                NCERT-aligned notes
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                ~2 hours
+                              </span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div className="flex items-center gap-4">
-                        <div className="hidden sm:block w-32">
-                          <div className="flex items-center justify-between text-xs mb-1">
-                            <span className="text-muted-foreground">Progress</span>
-                            <span className="font-medium">{chapter.progress}%</span>
-                          </div>
-                          <Progress value={chapter.progress} className="h-2" />
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="gap-1.5 text-xs"
+                            onClick={(e) => { e.stopPropagation(); goToNotes(); }}
+                          >
+                            <FileText className="h-3.5 w-3.5" /> Open Notes
+                          </Button>
+                          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="gap-1.5 text-xs"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/learn/notes?subject=${encodeURIComponent(currentSubject.name)}&chapter=${encodeURIComponent(chapter.name)}`);
-                          }}
-                        >
-                          <FileText className="h-3.5 w-3.5" /> Notes
-                        </Button>
-                        <Button variant="ghost" size="icon" className="group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                          <ChevronRight className="h-5 w-5" />
-                        </Button>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </div>
