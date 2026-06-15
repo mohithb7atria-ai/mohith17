@@ -4,7 +4,6 @@ import {
   BookOpen, 
   Brain, 
   ClipboardList, 
-  BarChart3, 
   Home,
   Menu,
   X,
@@ -31,7 +30,6 @@ const navItems = [
   { path: "/notes", label: "Notes", icon: FileText },
   { path: "/practice", label: "Practice", icon: Brain },
   { path: "/tests", label: "Tests", icon: ClipboardList },
-  { path: "/analysis", label: "Analysis", icon: BarChart3 },
 ];
 
 export function Navbar() {
@@ -47,7 +45,6 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-lg">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent">
               <Sparkles className="h-5 w-5 text-white" />
@@ -58,7 +55,6 @@ export function Navbar() {
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -80,7 +76,6 @@ export function Navbar() {
             })}
           </div>
 
-          {/* Right Side Actions */}
           <div className="flex items-center gap-3">
             <Link to="/doubt-solver" className="hidden sm:block">
               <Button variant="accent" size="sm" className="gap-2">
@@ -120,8 +115,7 @@ export function Navbar() {
                 )}
               </>
             )}
-            
-            {/* Mobile Menu Button */}
+
             <Button
               variant="ghost"
               size="icon"
@@ -133,7 +127,6 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-border/40 animate-slide-up">
             <div className="flex flex-col gap-2">
@@ -165,7 +158,7 @@ export function Navbar() {
                   Ask AI Doubt Solver
                 </Button>
               </Link>
-              
+
               {!loading && !user && (
                 <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full gap-2 mt-2">
